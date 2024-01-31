@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number to Words Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            font-size: 18px;
+            color: #333;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+    <script>
+        function convertToWords() {
+            // Get the input value
+            var numberInput = document.getElementById("numberInput").value;
+
+            // Validate the input
+            var isValidInput = validateInput(numberInput);
+
+            if (isValidInput) {
+                // Convert the number to words
+                var words = convertNumberToWords(numberInput);
+
+                // Display the result
+                document.getElementById("result").innerHTML = "In words: " + words;
+            } else {
+                // Display an error message for invalid input
+                document.getElementById("result").innerHTML = "Invalid input. Please enter a number between 0 and 999.";
+            }
+        }
+
+        function validateInput(input) {
+            // Check if the input is a valid number
+            var isNumeric = /^\d+$/.test(input);
+
+            // Check if the number is in the range of 0 to 999
+            var isInRange = parseInt(input, 10) >= 0 && parseInt(input, 10) <= 999;
+
+            return isNumeric && isInRange;
+        }
+
+        function convertNumberToWords(number) {
+            // Define arrays for words
+            var units = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+            var teens = ["", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            var tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+
+            // Convert the number to words
+            var result = "";
+
+            if (number >= 100) {
+                result += units[Math.floor(number / 100)] + " Hundred ";
+                number %= 100;
+            }
+
+            if (number >= 20) {
+                result += tens[Math.floor(number / 10)] + " ";
+                number %= 10;
+            } else if (number >= 11) {
+                result += teens[number - 10] + " ";
+                number = 0;
+            }
+
+            if (number > 0) {
+                result += units[number];
+            }
+
+            return result.trim();
+        }
+    </script>
+</head>
+<body>
+    <h1>Number to Words Converter</h1>
+    <label for="numberInput">Enter a number (0 to 999): </label>
+    <input type="text" id="numberInput" maxlength="3">
+    <button onclick="convertToWords()">Convert</button>
+    <div id="result"></div>
+</body>
+</html>
